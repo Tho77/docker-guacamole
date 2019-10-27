@@ -38,6 +38,9 @@ WORKDIR ${BUILD_DIR}
 ### Add configuration scripts
 RUN mkdir -p /opt/guacamole/bin && cp -R guacamole-docker/bin/* /opt/guacamole/bin/
 
+### Copy over iOS 13 fix
+COPY guacViewport.js ${BUILD_DIR}/app/client/directives/
+
 ### Run the build itself
 RUN /opt/guacamole/bin/build-guacamole.sh "$BUILD_DIR" /opt/guacamole "$BUILD_PROFILE"
 
