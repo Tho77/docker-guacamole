@@ -6,7 +6,7 @@
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
 
-ARG DEBIAN_VERSION=stable
+ARG DEBIAN_VERSION=stretch
 ##########################
 ### Get Guacamole Server
 ARG GUAC_VER=1.0.0
@@ -129,9 +129,11 @@ CMD [ "/etc/firstrun/firstrun.sh" ]
 ### Build image with MariaDB 
 FROM nomariadb
 
+RUN printf "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
+
 RUN apt-get update                                                                                                                              && \
     apt-get install -y --no-install-recommends dirmngr gnupg                                                                                    && \
-    apt-key adv --no-tty --recv-keys --keyserver keyserver.ubuntu.com 0xF1656F24C74CD1D8                                                        && \
+    apt-key adv --no-tty --recv-keys --keyserver hkps://keyserver.ubuntu.com:443 0xF1656F24C74CD1D8                                                        && \
     echo 'deb [arch=amd64,i386,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.2/debian stretch main' >> /etc/apt/sources.list    && \
     apt-get update                                                                                                                              && \
     apt-get install -y --no-install-recommends mariadb-server                                                                                   && \
